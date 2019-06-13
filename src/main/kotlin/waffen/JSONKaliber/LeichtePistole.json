@@ -1,0 +1,13 @@
+{
+  "name": "Leichte Pistole",
+  "last": 0,
+  "schadenAnzahl": 1,
+  "schaden": 3,
+  "durchschlag": 0,
+  "durchschlagNull": false,
+  "reichweite": 7,
+  "rueckstoss": 2,
+  "komplexitaet": 0,
+  "punkte": -7,
+  "preis": 3.0
+}

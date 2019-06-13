@@ -1,0 +1,5 @@
+package waffen
+
+class Eigenschaft {
+
+}

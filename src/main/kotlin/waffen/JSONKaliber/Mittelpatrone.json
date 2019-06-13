@@ -1,0 +1,13 @@
+{
+  "name": "Mittelpatrone",
+  "last": 0,
+  "schadenAnzahl": 1,
+  "schaden": 5,
+  "durchschlag": 1,
+  "durchschlagNull": false,
+  "reichweite": 12,
+  "rueckstoss": 6,
+  "komplexitaet": 1,
+  "punkte": -8,
+  "preis": 20.0
+}
