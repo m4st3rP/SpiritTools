@@ -1,0 +1,8 @@
+{
+  "name": "Einzelschuss",
+  "reichweite": 2,
+  "rueckstoss": 1,
+  "komplexitaet": 2,
+  "punkte": -1,
+  "preisModifikator": 0.5
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Schrotflinte",
+  "last": 0,
+  "schadenAnzahl": 2,
+  "schaden": 4,
+  "durchschlag": 0,
+  "durchschlagNull": true,
+  "reichweite": 5,
+  "rueckstoss": 8,
+  "komplexitaet": 1,
+  "punkte": -13,
+  "preis": 18.0
+}

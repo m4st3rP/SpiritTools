@@ -1,0 +1,9 @@
+{
+  "name": "Kurzer Lauf",
+  "last": 1 ,
+  "durchschlag": 0,
+  "reichweitenModifikator": 1.5,
+  "rueckstoss": 0,
+  "punkte": -1,
+  "preisModifikator": 0.25
+}

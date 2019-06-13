@@ -1,0 +1,13 @@
+{
+  "name": "Gewehrpatrone",
+  "last": 0,
+  "schadenAnzahl": 1,
+  "schaden": 6,
+  "durchschlag": 1,
+  "durchschlagNull": false,
+  "reichweite": 15,
+  "rueckstoss": 8,
+  "komplexitaet": 1,
+  "punkte": -14,
+  "preis": 24.0
+}

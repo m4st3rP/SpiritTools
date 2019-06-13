@@ -1,0 +1,9 @@
+{
+  "name": "Gewehrlauf",
+  "last": 2,
+  "durchschlag": 0,
+  "reichweitenModifikator": 2.0,
+  "rueckstoss": -1,
+  "punkte": -2,
+  "preisModifikator": 0.35
+}
