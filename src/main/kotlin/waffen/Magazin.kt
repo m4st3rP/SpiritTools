@@ -1,5 +1,8 @@
 package waffen
 
-enum class Magazin {
-    KIPPLAUF, INTERN, ZYLINDER, KASTEN, GURT
+data class Magazin(val name: String,
+                   val durchschlag: Int,
+                   val komplexitaet: Int,
+                   val punkte: Int,
+                   val preisModifikator: Double) {
 }
