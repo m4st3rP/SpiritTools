@@ -1,0 +1,8 @@
+{
+  "name": "Benutzerfreundlich",
+  "vorteil": true,
+  "maxAnzahl": 2,
+  "punkte": -3,
+  "wert": 1.0,
+  "schwierigkeitDesAngriffBonus": 1
+}

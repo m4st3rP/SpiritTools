@@ -1,0 +1,7 @@
+{
+  "name": "Erhöhter Schaden",
+  "vorteil": true,
+  "punkte": -4,
+  "wert": 1.0,
+  "schaden": 1
+}

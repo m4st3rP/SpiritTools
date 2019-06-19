@@ -1,0 +1,7 @@
+{
+  "name": "Verringerter Durchschlag",
+  "vorteil": false,
+  "maxAnzahl": 2,
+  "punkte": 1,
+  "durchschlag": -1
+}

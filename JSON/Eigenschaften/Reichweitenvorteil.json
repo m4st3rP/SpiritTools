@@ -1,0 +1,8 @@
+{
+  "name": "Reichweitenvorteil",
+  "vorteil": true,
+  "maxAnzahl": 3,
+  "punkte": -1,
+  "wert": 0.2,
+  "reichweite": 1,
+}

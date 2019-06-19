@@ -1,0 +1,7 @@
+{
+  "name": "Interne Munition",
+  "vorteil": true,
+  "punkte": -1,
+  "wert": 0.1,
+  "interneMunitionsModifikator": 2.0
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Teuer",
+  "vorteil": false,
+  "maxAnzahl": 2,
+  "punkte": 1,
+  "gesamtpreismodifikator": 0.5
+}

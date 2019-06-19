@@ -1,0 +1,7 @@
+{
+  "name": "Schalldämpfer",
+  "vorteil": true,
+  "punkte": -3,
+  "wert": 1.5,
+  "schalldaempfer": true
+}

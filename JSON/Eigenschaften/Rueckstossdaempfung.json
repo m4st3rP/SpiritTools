@@ -1,0 +1,8 @@
+{
+  "name": "Rückstoßdämpfung",
+  "vorteil": true,
+  "maxAnzahl": 2,
+  "punkte": -2,
+  "wert": 0.25,
+  "rueckstoss": 1,
+}

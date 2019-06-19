@@ -1,0 +1,8 @@
+{
+  "name": "Zusätzlicher Lauf",
+  "vorteil": true,
+  "maxAnzahl": 3,
+  "punkte": -1,
+  "wert": 0.2,
+  "zusaetzlicheLaeufe": 1
+}

@@ -10,7 +10,9 @@ data class Teile(
     val laufarten: MutableList<Lauf> = mutableListOf(),
     val magazine: MutableList<Magazin> = mutableListOf(),
     val rahmen: MutableList<Rahmen> = mutableListOf(),
-    val schaftarten: MutableList<Schaft> = mutableListOf()
+    val schaftarten: MutableList<Schaft> = mutableListOf(),
+    val blacklists: MutableList<Blacklist> = mutableListOf(),
+    val whitelists: MutableList<Whitelist> = mutableListOf()
 ) {
     init {
         val eigenschaftenPath = File(".\\JSON\\Eigenschaften")
@@ -20,6 +22,9 @@ data class Teile(
         val magazinePath = File(".\\JSON\\Magazine")
         val rahmenPath = File(".\\JSON\\Rahmen")
         val schaftartenPath = File(".\\JSON\\Schaftarten")
+
+        val blacklistsPath = File(".\\JSON\\Regeln\\Blacklists")
+        val whitelistsPath = File(".\\JSON\\Regeln\\Whitelists")
 
         eigenschaftenPath.listFiles().forEach {
             Klaxon().parse<Eigenschaft>(it)?.let { it1 -> eigenschaften.add(it1) }
@@ -47,6 +52,14 @@ data class Teile(
 
         schaftartenPath.listFiles().forEach {
             Klaxon().parse<Schaft>(it)?.let { it1 -> schaftarten.add(it1) }
+        }
+
+        blacklistsPath.listFiles().forEach {
+            Klaxon().parse<Blacklist>(it)?.let { it1 -> blacklists.add(it1) }
+        }
+
+        whitelistsPath.listFiles().forEach {
+            Klaxon().parse<Whitelist>(it)?.let { it1 -> whitelists.add(it1) }
         }
     }
 }
