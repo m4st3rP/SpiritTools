@@ -1,9 +1,9 @@
-package waffen
+package waffe
 
 import kotlin.math.roundToInt
 
 data class Waffe(
-    private var eigenschaften: List<Eigenschaft>,
+    private val eigenschaften: List<Eigenschaft>,
     private var feuermodus: Feuermodus,
     private var kaliber: Kaliber,
     private var lauf: Lauf,
@@ -11,6 +11,8 @@ data class Waffe(
     private var rahmen: Rahmen,
     private var schaft: Schaft
 ) {
+    private val MAX_NACHTEILIGE_EIGENSCHAFTEN_PUNKTE = 5
+
     fun getLast(): Int {
         var last = rahmen.last
         last += kaliber.last
@@ -196,40 +198,55 @@ data class Waffe(
         return eigenschaften.stream().anyMatch { it.geraeuschBeimNachladen }
     }
 
-    fun getWaffeLegal(blacklists: List<Blacklist>, whitelists: List<Whitelist>): Boolean {
-        var amount = 0
+    fun getWaffeLegal(blacklists: List<Blacklist>, whitelists: List<Whitelist>): Legal {
         var legal = true
         var firstFoundPart = ""
+        var message = ""
 
         for (b in blacklists) {
-            amount = 0
+            var amountOfBlacklistedParts = 0
             for(n in b.list) {
                 if(containsPart(n)) {
-                    amount++
-                    if(amount == 1) {
+                    amountOfBlacklistedParts++
+                    if(amountOfBlacklistedParts == 1) {
                         firstFoundPart = n
                     }
-                    if(amount > 1) {
-                        println("$n ist mit $firstFoundPart inkompatibel.")
+                    if(amountOfBlacklistedParts > 1) {
+                        val mes = "$n ist mit $firstFoundPart inkompatibel."
+                        println(mes)
+                        message += mes + "\n"
+                        legal = false
                     }
                 }
             }
-        }
-        if(amount > 1) {
-            legal = false
         }
 
         for(w in whitelists) {
             if (containsPart(w.name)) {
                 for(t in w.list) {
                     if(!containsPart(t)) {
-                        println("Waffe hat ${w.name} und braucht deswegen auch $t.")
+                        val mes = "Waffe hat ${w.name} und braucht deswegen auch $t."
+                        println(mes)
+                        message += mes + "\n"
                         legal = false
                     }
                 }
             }
         }
-        return legal
+
+        var amountOfNachteiligeEigenschaftenPunkte = 0
+        for(e in eigenschaften) {
+            if (!e.vorteil) {
+                amountOfNachteiligeEigenschaftenPunkte += e.punkte
+            }
+        }
+        if (amountOfNachteiligeEigenschaftenPunkte > MAX_NACHTEILIGE_EIGENSCHAFTEN_PUNKTE) {
+            val mes = "Waffe hat mehr als $MAX_NACHTEILIGE_EIGENSCHAFTEN_PUNKTE Punkte durch nachteilige Eigenschaften bekommen."
+            println(mes)
+            message += mes + "\n"
+            legal = false
+        }
+        return Legal(legal, message)
     }
 
     private fun containsPart(name: String): Boolean {

@@ -1,5 +1,5 @@
-import waffen.Teile
-import waffen.Waffe
+import waffe.Teile
+import waffe.Waffe
 
 fun main() {
     val teile = Teile()

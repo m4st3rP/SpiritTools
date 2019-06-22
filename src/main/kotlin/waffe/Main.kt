@@ -1,22 +1,17 @@
-package waffen
+package waffe
 
 fun main(args: Array<String>) {
     val teile = Teile()
 
-    val eigenschaftenNumbers = mutableListOf<Int>()
-    for (i in 6 until args.size) {
-        eigenschaftenNumbers.add(args[i].toInt())
-    }
-
     val eigenschaften = mutableListOf<Eigenschaft>()
-    for (i in eigenschaftenNumbers) {
-        eigenschaften.add(teile.eigenschaften[i])
+    for (i in 6 until args.size) {
+        eigenschaften.add(teile.eigenschaften[args[i].toInt()])
     }
 
     val waffe = Waffe(eigenschaften, teile.feuermodi[args[3].toInt()], teile.kaliber[args[1].toInt()], teile.laufarten[args[4].toInt()], teile.magazine[args[2].toInt()], teile.rahmen[args[0].toInt()], teile.schaftarten[args[5].toInt()])
 
     val waffeLegal = waffe.getWaffeLegal(teile.blacklists, teile.whitelists)
-    if(waffeLegal) {
+    if(waffeLegal.legal) {
         println("Last = " + waffe.getLast())
         println("Durchschlag = " + waffe.getDurchschlag())
         println("Eigenschaften = " + waffe.getEigenschaftenNamen())

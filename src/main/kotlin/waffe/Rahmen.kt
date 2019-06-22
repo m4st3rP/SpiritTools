@@ -1,10 +1,10 @@
-package waffen
+package waffe
 
-data class Feuermodus(
+data class Rahmen(
     val name: String,
-    val reichweite: Int,
+    val last: Int,
     val rueckstoss: Int,
     val komplexitaet: Int,
     val punkte: Int,
-    val preisModifikator: Double
+    val preis: Double
 )

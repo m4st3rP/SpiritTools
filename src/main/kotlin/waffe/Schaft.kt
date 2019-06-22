@@ -1,4 +1,4 @@
-package waffen
+package waffe
 
 data class Schaft(
     val name: String,

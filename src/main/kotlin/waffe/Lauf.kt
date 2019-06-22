@@ -1,4 +1,4 @@
-package waffen
+package waffe
 
 data class Lauf(
     val name: String,

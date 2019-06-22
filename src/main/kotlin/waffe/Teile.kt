@@ -1,4 +1,4 @@
-package waffen
+package waffe
 
 import com.beust.klaxon.Klaxon
 import java.io.File

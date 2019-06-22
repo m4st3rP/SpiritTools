@@ -1,4 +1,4 @@
-package waffen
+package waffe
 
 data class Eigenschaft(
     val name: String,
