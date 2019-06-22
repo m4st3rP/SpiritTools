@@ -14,10 +14,12 @@ fun main(args: Array<String>) {
     if(waffeLegal.legal) {
         println("Last = " + waffe.getLast())
         println("Durchschlag = " + waffe.getDurchschlag())
+        println("Rückstoß = " + waffe.getRueckstoss())
         println("Eigenschaften = " + waffe.getEigenschaftenNamen())
         println("Feuermodus = " + waffe.getFeuermodus())
         println("Kaliber = " + waffe.getKaliber())
         println("Komplexität = " + waffe.getKomplexitaet())
+        println("Kugeln = " + waffe.getKugeln())
         println("Schaden = " + waffe.getSchaden())
         println("Reichweite = " + waffe.getReichweite())
         println("Magazingröße = " + waffe.getMagazingroesse())

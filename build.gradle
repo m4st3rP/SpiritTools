@@ -63,6 +63,12 @@ jar {
     }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 //javafx {
 //    version = "11.0.2"
 //    modules = [ 'javafx.controls' ]

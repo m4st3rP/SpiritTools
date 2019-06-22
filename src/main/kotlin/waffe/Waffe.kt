@@ -10,8 +10,66 @@ data class Waffe(
     private var magazin: Magazin,
     private var rahmen: Rahmen,
     private var schaft: Schaft
-) {
+    ) {
+    var lastE: Int = Int.MIN_VALUE
+    var durchschlagE: Int = Int.MIN_VALUE
+    var rueckstossE: Int = Int.MIN_VALUE
+    var eigenschaftenNamenE: MutableList<String> = mutableListOf()
+    var feuermodusE: String = "Fehler"
+    var kaliberE: String = "Fehler"
+    var komplexitaetE: Int = Int.MIN_VALUE
+    var kugelnE: Int = Int.MIN_VALUE
+    var schadenE: Int = Int.MIN_VALUE
+    var reichweiteE: Int = Int.MIN_VALUE
+    var magazingroesseE: Int = Int.MIN_VALUE
+    var magazinartE: String = "Fehler"
+    var preisE: Double = Double.MIN_VALUE
+    var punkteE: Int = Int.MIN_VALUE
+
+    var schwierigkeitDesAngriffBonusE: Int = Int.MIN_VALUE
+    var einklappbarE: Boolean? = null
+    var vollautomatischeSalvenKugelanzahlE: Int = Int.MIN_VALUE
+    var schalldaempferE: Boolean? = null
+    var repetierenIstFreieHandlungE: Boolean? = null
+    var wartungsReperaturBonusE: Int = Int.MIN_VALUE
+    var laeufeAnzahlE: Int = Int.MIN_VALUE
+    var ladehemmungenE: Boolean? = null
+    var spezialmagazinE: Boolean? = null
+    var robustE: Boolean? = null
+    var unrobustE: Boolean? = null
+    var geraeuschBeimNachladenE: Boolean? = null
+
     private val MAX_NACHTEILIGE_EIGENSCHAFTEN_PUNKTE = 5
+
+    fun calculateEverything() {
+        println("Last = " + getLast())
+        println("Durchschlag = " + getDurchschlag())
+        println("Rückstoß = " + getRueckstoss())
+        println("Eigenschaften = " + getEigenschaftenNamen())
+        println("Feuermodus = " + getFeuermodus())
+        println("Kaliber = " + getKaliber())
+        println("Komplexität = " + getKomplexitaet())
+        println("Kugeln = " + getKugeln())
+        println("Schaden = " + getSchaden())
+        println("Reichweite = " + getReichweite())
+        println("Magazingröße = " + getMagazingroesse())
+        println("Magazinart = " + getMagazinart())
+        println("Preis = " + "%.2f".format(getPreis()))
+        println("Punkte = " + getPunkte())
+
+        println("Schwierigkeit des Angriff Bonus = " + getSchwierigkeitDesAngriffBonus())
+        println("Einklappbar = " + getEinklappbar())
+        println("Vollautomatische Salvenkugelanzahl = " + getVollautomatischeSalvenKugelanzahl())
+        println("Schalldämpfer = " + getSchalldaempfer())
+        println("Repetieren ist freie Handlung = " + getRepetierenIstFreieHandlung())
+        println("Wartungs-/Reperaturbonus = " + getWartungsReperaturBonus())
+        println("Anzahl Läufe = " + getLaeufeAnzahl())
+        println("Ladehemmungen bei Patzer = " + getLadehemmungen())
+        println("Spezialmagazin = " + getSpezialmagain())
+        println("Robust = " + getRobust())
+        println("Unrobust = " + getUnrobust())
+        println("PING! (Lautes Geräusch beim Nachladen) = " + getGeraeuscheBeimNachladen())
+    }
 
     fun getLast(): Int {
         var last = rahmen.last
@@ -20,12 +78,16 @@ data class Waffe(
         last += schaft.last
 
         last += eigenschaften.stream().mapToInt { it.last }.sum()
+
+        lastE = last
         return last
     }
 
     fun getSchaden(): Int {
         var schaden = kaliber.schaden
         schaden += eigenschaften.stream().mapToInt { it.schaden }.sum()
+
+        schadenE = schaden
         return schaden
     }
 
@@ -38,6 +100,8 @@ data class Waffe(
         if(kaliber.durchschlagNull) {
             durchschlag = 0
         }
+
+        durchschlagE = durchschlag
         return durchschlag
     }
 
@@ -48,7 +112,11 @@ data class Waffe(
         reichweite += eigenschaften.stream().mapToInt { it.reichweite }.sum()
 
         val reichweitenModifikator = lauf.reichweitenModifikator
-        return (reichweite*reichweitenModifikator).roundToInt()
+
+        reichweite = (reichweite*reichweitenModifikator).roundToInt()
+
+        reichweiteE = reichweite
+        return reichweite
     }
 
     fun getRueckstoss(): Int {
@@ -59,7 +127,11 @@ data class Waffe(
         rueckstoss += eigenschaften.stream().mapToInt { it.rueckstoss }.sum()
 
         val rueckstossModifikator = schaft.rueckstossModifikator
-        return (rueckstoss*rueckstossModifikator).roundToInt()
+
+        rueckstoss = (rueckstoss*rueckstossModifikator).roundToInt()
+
+        rueckstossE = rueckstoss
+        return rueckstoss
     }
 
     fun getMagazingroesse(): Int {
@@ -83,7 +155,7 @@ data class Waffe(
             "Schwere Panzerbüchse" to 3
         )
 
-        val magazingroesse = when(getMagazinart()) {
+        var magazingroesse = when(getMagazinart()) {
             "Kipplauf" -> 1
             "Intern" -> internMap[getKaliber()]?: -1
             "Zylinder" -> zylinderMap[getKaliber()]?: -1
@@ -92,18 +164,25 @@ data class Waffe(
 
         var interneMunitionsModifikator = 1.0
         interneMunitionsModifikator += eigenschaften.stream().mapToDouble { it.interneMunitionsModifikator }.sum()
-        return (magazingroesse.times(interneMunitionsModifikator)).roundToInt()
+
+        magazingroesse = (magazingroesse.times(interneMunitionsModifikator)).roundToInt()
+
+        magazingroesseE = magazingroesse
+        return magazingroesse
     }
 
     fun getMagazinart(): String {
+        magazinartE = magazin.name
         return magazin.name
     }
 
     fun getFeuermodus(): String {
+        feuermodusE = feuermodus.name
         return feuermodus.name
     }
 
     fun getKaliber(): String {
+        kaliberE = kaliber.name
         return kaliber.name
     }
 
@@ -113,7 +192,14 @@ data class Waffe(
         komplexitaet += magazin.komplexitaet
         komplexitaet += feuermodus.komplexitaet
         komplexitaet += eigenschaften.stream().mapToInt { it.komplexitaet }.sum()
+
+        komplexitaetE = komplexitaet
         return komplexitaet
+    }
+
+    fun getKugeln(): Int {
+        kugelnE = kaliber.schadenAnzahl
+        return kaliber.schadenAnzahl
     }
 
     fun getPreis(): Double {
@@ -129,7 +215,10 @@ data class Waffe(
         var gesamtpreismodifikator = 1.0
         gesamtpreismodifikator += eigenschaften.stream().mapToDouble { it.gesamtpreismodifikator }.sum()
 
-        return preis*preisModifikator*gesamtpreismodifikator
+        preis = preis*preisModifikator*gesamtpreismodifikator
+
+        preisE = preis
+        return preis
     }
 
     fun getEigenschaftenNamen(): List<String> {
@@ -145,6 +234,8 @@ data class Waffe(
         punkte += lauf.punkte
 
         punkte += eigenschaften.stream().mapToInt {it.punkte}.sum()
+
+        punkteE = punkte
         return punkte
     }
 
@@ -157,7 +248,7 @@ data class Waffe(
     }
 
     fun getVollautomatischeSalvenKugelanzahl(): Int {
-        val basis = 3
+        val basis = 3 //TODO: move to top
         return eigenschaften.stream().mapToInt {it.vollautomatischeSalvenKugelanzahlBonus}.sum() + basis
     }
 
@@ -165,7 +256,7 @@ data class Waffe(
         return eigenschaften.stream().anyMatch { it.schalldaempfer }
     }
 
-    fun getRepetierenIstFreieHandlung(): Boolean {
+    fun getRepetierenIstFreieHandlung(): Boolean { //TODO: gibts diese eigenschaft überhaupt noch und ist sie drinnen?
         return eigenschaften.stream().anyMatch { it.repetierenIstFreieHandlung }
     }
 
@@ -174,7 +265,7 @@ data class Waffe(
     }
 
     fun getLaeufeAnzahl(): Int {
-        val basis = 1
+        val basis = 1 //TODO: move to top
         return eigenschaften.stream().mapToInt { it.zusaetzlicheLaeufe }.sum() + basis
     }
 

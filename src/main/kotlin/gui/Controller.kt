@@ -6,16 +6,16 @@ import tornadofx.App
 import waffe.*
 
 class Controller: App(View::class, Styles::class) {
-    private val model = Model()
+    val teile = Teile()
 
-    fun getRahmen(): ObservableList<Rahmen>? = FXCollections.observableArrayList(model.teile.rahmen)
-    fun getKaliber(): ObservableList<Kaliber>? = FXCollections.observableArrayList(model.teile.kaliber)
-    fun getFeuermodi(): ObservableList<Feuermodus>? = FXCollections.observableArrayList(model.teile.feuermodi)
-    fun getMagazine(): ObservableList<Magazin>? = FXCollections.observableArrayList(model.teile.magazine)
-    fun getLaufarten(): ObservableList<Lauf>? = FXCollections.observableArrayList(model.teile.laufarten)
-    fun getSchaftarten(): ObservableList<Schaft>? = FXCollections.observableArrayList(model.teile.schaftarten)
-    fun getEigenschaftenVorteilig(): ObservableList<Eigenschaft>? = FXCollections.observableArrayList(model.teile.eigenschaften.filter { it.vorteil })
-    fun getEigenschaftenNachteilig(): ObservableList<Eigenschaft>? = FXCollections.observableArrayList(model.teile.eigenschaften.filter { !it.vorteil })
+    fun getRahmen(): ObservableList<Rahmen>? = FXCollections.observableArrayList(teile.rahmen)
+    fun getKaliber(): ObservableList<Kaliber>? = FXCollections.observableArrayList(teile.kaliber)
+    fun getFeuermodi(): ObservableList<Feuermodus>? = FXCollections.observableArrayList(teile.feuermodi)
+    fun getMagazine(): ObservableList<Magazin>? = FXCollections.observableArrayList(teile.magazine)
+    fun getLaufarten(): ObservableList<Lauf>? = FXCollections.observableArrayList(teile.laufarten)
+    fun getSchaftarten(): ObservableList<Schaft>? = FXCollections.observableArrayList(teile.schaftarten)
+    fun getEigenschaftenVorteilig(): ObservableList<Eigenschaft>? = FXCollections.observableArrayList(teile.eigenschaften.filter { it.vorteil })
+    fun getEigenschaftenNachteilig(): ObservableList<Eigenschaft>? = FXCollections.observableArrayList(teile.eigenschaften.filter { !it.vorteil })
 
     fun getWaffe(
         eigenschaften: List<Eigenschaft>,
