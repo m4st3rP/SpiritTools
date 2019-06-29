@@ -1,8 +1,8 @@
 {
   "name": "Schrotflinte",
   "last": 0,
-  "schadenAnzahl": 2,
-  "schaden": 4,
+  "schadenAnzahl": 4,
+  "schaden": 2,
   "durchschlag": 0,
   "durchschlagNull": true,
   "reichweite": 5,

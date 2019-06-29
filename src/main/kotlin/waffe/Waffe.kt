@@ -2,6 +2,10 @@ package waffe
 
 import kotlin.math.roundToInt
 
+const val MAX_NACHTEILIGE_EIGENSCHAFTEN_PUNKTE = 5
+const val VOLLAUTOMATISCHE_SALVENKUGELANZAHL_BASIS = 3
+const val LAEUFE_ANZAHL_BASIS = 1
+
 data class Waffe(
     private val eigenschaften: List<Eigenschaft>,
     private var feuermodus: Feuermodus,
@@ -14,7 +18,7 @@ data class Waffe(
     var lastE: Int = Int.MIN_VALUE
     var durchschlagE: Int = Int.MIN_VALUE
     var rueckstossE: Int = Int.MIN_VALUE
-    var eigenschaftenNamenE: MutableList<String> = mutableListOf()
+    var eigenschaftenNamenE: List<String> = mutableListOf()
     var feuermodusE: String = "Fehler"
     var kaliberE: String = "Fehler"
     var komplexitaetE: Int = Int.MIN_VALUE
@@ -39,7 +43,7 @@ data class Waffe(
     var unrobustE: Boolean? = null
     var geraeuschBeimNachladenE: Boolean? = null
 
-    private val MAX_NACHTEILIGE_EIGENSCHAFTEN_PUNKTE = 5
+    var eigenschaftenBeschreibung: String = ""
 
     fun calculateEverything() {
         println("Last = " + getLast())
@@ -215,14 +219,15 @@ data class Waffe(
         var gesamtpreismodifikator = 1.0
         gesamtpreismodifikator += eigenschaften.stream().mapToDouble { it.gesamtpreismodifikator }.sum()
 
-        preis = preis*preisModifikator*gesamtpreismodifikator
+        preis *= preisModifikator * gesamtpreismodifikator
 
         preisE = preis
         return preis
     }
 
     fun getEigenschaftenNamen(): List<String> {
-        return eigenschaften.map { it.name }
+        eigenschaftenNamenE = eigenschaften.map { it.name }
+        return eigenschaftenNamenE
     }
 
     fun getPunkte(): Int {
@@ -240,53 +245,109 @@ data class Waffe(
     }
 
     fun getSchwierigkeitDesAngriffBonus(): Int {
-        return eigenschaften.stream().mapToInt {it.schwierigkeitDesAngriffBonus}.sum()
+        schwierigkeitDesAngriffBonusE = eigenschaften.stream().mapToInt {it.schwierigkeitDesAngriffBonus}.sum()
+        if (schwierigkeitDesAngriffBonusE != 0) {
+            eigenschaftenBeschreibung += "Schwierigkeit des Angriffbonus = $schwierigkeitDesAngriffBonusE, "
+        }
+        return schwierigkeitDesAngriffBonusE
     }
 
     fun getEinklappbar(): Boolean {
-        return eigenschaften.stream().anyMatch { it.einklappbar }
+        val einklappbar = eigenschaften.stream().anyMatch { it.einklappbar }
+        einklappbarE = einklappbar
+        if (einklappbar) {
+            eigenschaftenBeschreibung += "Einklappbar, "
+        }
+        return einklappbar
     }
 
     fun getVollautomatischeSalvenKugelanzahl(): Int {
-        val basis = 3 //TODO: move to top
-        return eigenschaften.stream().mapToInt {it.vollautomatischeSalvenKugelanzahlBonus}.sum() + basis
+        vollautomatischeSalvenKugelanzahlE = eigenschaften.stream().mapToInt {it.vollautomatischeSalvenKugelanzahlBonus}.sum() + VOLLAUTOMATISCHE_SALVENKUGELANZAHL_BASIS
+
+        if(vollautomatischeSalvenKugelanzahlE != VOLLAUTOMATISCHE_SALVENKUGELANZAHL_BASIS) {
+            eigenschaftenBeschreibung += "Vollautomatische Salvenkugelanzal = $vollautomatischeSalvenKugelanzahlE, "
+        }
+
+        return vollautomatischeSalvenKugelanzahlE
     }
 
     fun getSchalldaempfer(): Boolean {
-        return eigenschaften.stream().anyMatch { it.schalldaempfer }
+        val schalldaempfer = eigenschaften.stream().anyMatch { it.schalldaempfer }
+        schalldaempferE = schalldaempfer
+        if(schalldaempfer) {
+            eigenschaftenBeschreibung += "Schalldämpfer, "
+        }
+        return schalldaempfer
     }
 
-    fun getRepetierenIstFreieHandlung(): Boolean { //TODO: gibts diese eigenschaft überhaupt noch und ist sie drinnen?
-        return eigenschaften.stream().anyMatch { it.repetierenIstFreieHandlung }
+    fun getRepetierenIstFreieHandlung(): Boolean {
+        val repetierenIstFreieHandlung = eigenschaften.stream().anyMatch { it.repetierenIstFreieHandlung }
+        repetierenIstFreieHandlungE = repetierenIstFreieHandlung
+        if (repetierenIstFreieHandlung) {
+            eigenschaftenBeschreibung += "Repetieren ist freie Handlung, "
+        }
+        return repetierenIstFreieHandlung
     }
 
     fun getWartungsReperaturBonus(): Int {
-        return eigenschaften.stream().mapToInt{it.wartungsReperaturBonus}.sum()
+        wartungsReperaturBonusE = eigenschaften.stream().mapToInt{it.wartungsReperaturBonus}.sum()
+        if(wartungsReperaturBonusE != 0) {
+            eigenschaftenBeschreibung += "Wartungs-/Reperaturbonus = $wartungsReperaturBonusE, "
+        }
+        return wartungsReperaturBonusE
     }
 
     fun getLaeufeAnzahl(): Int {
-        val basis = 1 //TODO: move to top
-        return eigenschaften.stream().mapToInt { it.zusaetzlicheLaeufe }.sum() + basis
+        laeufeAnzahlE = eigenschaften.stream().mapToInt { it.zusaetzlicheLaeufe }.sum() + LAEUFE_ANZAHL_BASIS
+        if (laeufeAnzahlE != LAEUFE_ANZAHL_BASIS) {
+            eigenschaftenBeschreibung += "Anzahl Läufe = $laeufeAnzahlE, "
+        }
+        return laeufeAnzahlE
     }
 
     fun getLadehemmungen(): Boolean {
-        return eigenschaften.stream().anyMatch { it.ladehemmungen }
+        val ladehemmungen = eigenschaften.stream().anyMatch { it.ladehemmungen }
+        ladehemmungenE = ladehemmungen
+        if (ladehemmungen) {
+            eigenschaftenBeschreibung += "Bei Patzer Ladehemunng, "
+        }
+        return ladehemmungen
     }
 
     fun getSpezialmagain(): Boolean {
-        return eigenschaften.stream().anyMatch { it.spezialmagazin }
+        val spezialmagazin = eigenschaften.stream().anyMatch { it.spezialmagazin }
+        spezialmagazinE = spezialmagazin
+        if(spezialmagazin) {
+            eigenschaftenBeschreibung += "Spezialmagazin, "
+        }
+        return spezialmagazin
     }
 
     fun getRobust(): Boolean {
+        val robust = eigenschaften.stream().anyMatch { it.robust }
+        robustE = robust
+        if(robust) {
+            eigenschaftenBeschreibung += "Robust, "
+        }
         return eigenschaften.stream().anyMatch { it.robust }
     }
 
     fun getUnrobust(): Boolean {
-        return eigenschaften.stream().anyMatch { it.unrobust }
+        val unrobust = eigenschaften.stream().anyMatch { it.unrobust }
+        unrobustE = unrobust
+        if(unrobust) {
+            eigenschaftenBeschreibung += "Unrobust, "
+        }
+        return unrobust
     }
 
     fun getGeraeuscheBeimNachladen(): Boolean {
-        return eigenschaften.stream().anyMatch { it.geraeuschBeimNachladen }
+        val geraeuschBeimNachladen = eigenschaften.stream().anyMatch { it.geraeuschBeimNachladen }
+        geraeuschBeimNachladenE = geraeuschBeimNachladen
+        if(geraeuschBeimNachladen) {
+            eigenschaftenBeschreibung += "PING!, "
+        }
+        return geraeuschBeimNachladen
     }
 
     fun getWaffeLegal(blacklists: List<Blacklist>, whitelists: List<Whitelist>): Legal {

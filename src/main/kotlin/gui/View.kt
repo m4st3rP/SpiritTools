@@ -1,7 +1,9 @@
 package gui
 
 import javafx.event.EventHandler
+import javafx.scene.control.Alert
 import javafx.scene.control.SelectionMode
+import javafx.scene.control.TabPane
 import javafx.scene.control.TableView
 import tornadofx.*
 import tornadofx.View
@@ -24,6 +26,7 @@ class View : View("Spirit Tools") {
 
     override val root = vbox {
         tabpane {
+            tabClosingPolicy = TabPane.TabClosingPolicy.UNAVAILABLE
             tab("Rahmen") {
                 rahmenTable = tableview(controller.getRahmen()) {
                     readonlyColumn("Name", Rahmen::name)
@@ -42,7 +45,7 @@ class View : View("Spirit Tools") {
                     readonlyColumn("Kugeln", Kaliber::schadenAnzahl)
                     readonlyColumn("Schaden", Kaliber::schaden)
                     readonlyColumn("Durchschlag", Kaliber::durchschlag)
-                    readonlyColumn("Durchschlag = 0?", Kaliber::durchschlagNull)
+                    readonlyColumn("Durchschlag = 0", Kaliber::durchschlagNull)
                     readonlyColumn("Reichweite", Kaliber::reichweite)
                     readonlyColumn("Rückstoß", Kaliber::rueckstoss)
                     readonlyColumn("Komplexität", Kaliber::komplexitaet)
@@ -95,14 +98,27 @@ class View : View("Spirit Tools") {
                     selectionModel.selectionMode = SelectionMode.SINGLE
                 }
             }
-                /*eigenschaftVorteiligTable = tableview(controller.getEigenschaftenVorteilig()) {
-                    readonlyColumn("Name", Rahmen::name)
-                    selectionModel.selectionMode = SelectionMode.SINGLE
+            //TODO: implement information text and multiple selection
+            tab("Eigenschaften - Vorteile") {
+                eigenschaftVorteiligTable = tableview(controller.getEigenschaftenVorteilig()) {
+                    readonlyColumn("Name", Eigenschaft::name)
+                    readonlyColumn("Last", Eigenschaft::last)
+                    readonlyColumn("Punkte", Eigenschaft::punkte)
+                    readonlyColumn("Preismodifikator", Eigenschaft::wert)
+                    readonlyColumn("Gesamtpreismodifikator", Eigenschaft::gesamtpreismodifikator)
+                    selectionModel.selectionMode = SelectionMode.MULTIPLE
                 }
+            }
+            tab("Eigenschaften - Nachteile") {
                 eigenschaftNachteiligTable = tableview(controller.getEigenschaftenNachteilig()) {
-                    readonlyColumn("Name", Rahmen::name)
-                    selectionModel.selectionMode = SelectionMode.SINGLE
-                }*/
+                    readonlyColumn("Name", Eigenschaft::name)
+                    readonlyColumn("Last", Eigenschaft::last)
+                    readonlyColumn("Punkte", Eigenschaft::punkte)
+                    readonlyColumn("Preismodifikator", Eigenschaft::wert)
+                    readonlyColumn("Gesamtpreismodifikator", Eigenschaft::gesamtpreismodifikator)
+                    selectionModel.selectionMode = SelectionMode.MULTIPLE
+                }
+            }
         }
         val waffenTable = tableview<Waffe> {
             readonlyColumn("Punkte", Waffe::punkteE)
@@ -119,19 +135,7 @@ class View : View("Spirit Tools") {
             readonlyColumn("Kompl.", Waffe::komplexitaetE)
             readonlyColumn("Eigen.", Waffe::eigenschaftenNamenE)
             readonlyColumn("Preis", Waffe::preisE)
-
-            readonlyColumn("Angriffbonus", Waffe::schwierigkeitDesAngriffBonusE)
-            readonlyColumn("Einklapp.", Waffe::einklappbarE)
-            readonlyColumn("Vollautosalvenkugeln", Waffe::vollautomatischeSalvenKugelanzahlE)
-            readonlyColumn("Schalldämpfer", Waffe::schalldaempferE)
-            readonlyColumn("Repetieren ist freie Handlung", Waffe::repetierenIstFreieHandlungE)
-            readonlyColumn("Wartungs-/Reperaturbonus", Waffe::wartungsReperaturBonusE)
-            readonlyColumn("Läufe", Waffe::laeufeAnzahlE)
-            readonlyColumn("Ladehemmungen bei Patzer", Waffe::ladehemmungenE)
-            readonlyColumn("Spezialmag.", Waffe::spezialmagazinE)
-            readonlyColumn("Robust", Waffe::robustE)
-            readonlyColumn("Unrobust", Waffe::unrobustE)
-            readonlyColumn("PING!", Waffe::geraeuschBeimNachladenE)
+            readonlyColumn("Eigenschaften Beschreibung", Waffe::eigenschaftenBeschreibung)
 
             selectionModel.selectionMode = SelectionMode.SINGLE
         }
@@ -142,13 +146,32 @@ class View : View("Spirit Tools") {
             val magazin = magazinTable?.selectionModel?.selectedItem
             val rahmen = rahmenTable?.selectionModel?.selectedItem
             val schaft = schaftTable?.selectionModel?.selectedItem
+            val eigenschaftenVorteilig = eigenschaftVorteiligTable?.selectionModel?.selectedItems
+            val eigenschaftenNachteilig = eigenschaftNachteiligTable?.selectionModel?.selectedItems
 
-            val waffe = controller.getWaffe(listOf(), feuermodus!!, kaliber!!, lauf!!, magazin!!, rahmen!!, schaft!!) //TODO: do proper checks
+            val eigenschaften = mutableListOf<Eigenschaft>()
+            if (eigenschaftenVorteilig != null) {
+                for(e in eigenschaftenVorteilig) {
+                    eigenschaften.add(e)
+                }
+            }
+            if (eigenschaftenNachteilig != null) {
+                for(e in eigenschaftenNachteilig) {
+                    eigenschaften.add(e)
+                }
+            }
+
+            val waffe = controller.getWaffe(eigenschaften, feuermodus!!, kaliber!!, lauf!!, magazin!!, rahmen!!, schaft!!) //TODO: do proper checks
             waffe.calculateEverything()
-            if (waffe.getWaffeLegal(controller.teile.blacklists, controller.teile.whitelists).legal) {
+            val waffeLegal = waffe.getWaffeLegal(controller.teile.blacklists, controller.teile.whitelists)
+            if (waffeLegal.legal) {
                 waffenTable.items.add(waffe)
             } else {
-                //TODO: message that waffe is not legal
+                alert(
+                    type = Alert.AlertType.ERROR,
+                    header = "Waffe illegal!",
+                    content = waffeLegal.message
+                )
             }
         }
     }
