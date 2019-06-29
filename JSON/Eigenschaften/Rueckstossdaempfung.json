@@ -4,5 +4,5 @@
   "maxAnzahl": 2,
   "punkte": -2,
   "wert": 0.25,
-  "rueckstoss": 1,
+  "rueckstoss": -1,
 }

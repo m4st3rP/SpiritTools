@@ -128,7 +128,9 @@ data class Waffe(
         rueckstoss += kaliber.rueckstoss
         rueckstoss += feuermodus.rueckstoss
         rueckstoss += lauf.rueckstoss
+        println("Rückstoß: $rueckstoss")
         rueckstoss += eigenschaften.stream().mapToInt { it.rueckstoss }.sum()
+        println("Rückstoß: $rueckstoss")
 
         val rueckstossModifikator = schaft.rueckstossModifikator
 
