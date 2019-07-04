@@ -355,10 +355,11 @@ data class Waffe(
         var firstFoundPart = ""
         var message = ""
 
+        // check if the blacklist rules are adhered
         for (b in blacklists) {
             var amountOfBlacklistedParts = 0
             for(n in b.list) {
-                if(containsPart(n)) {
+                if(containsPart(n) != 0) {
                     amountOfBlacklistedParts++
                     if(amountOfBlacklistedParts == 1) {
                         firstFoundPart = n
@@ -373,10 +374,11 @@ data class Waffe(
             }
         }
 
+        // check if the whitelist rules are adhered
         for(w in whitelists) {
-            if (containsPart(w.name)) {
+            if (containsPart(w.name) != 0) {
                 for(t in w.list) {
-                    if(!containsPart(t)) {
+                    if(containsPart(t) == 0) {
                         val mes = "Waffe hat ${w.name} und braucht deswegen auch $t."
                         println(mes)
                         message += mes + "\n"
@@ -386,6 +388,22 @@ data class Waffe(
             }
         }
 
+        // check if every eigenschaft doesn't get used more often than allowed
+        val foundMoreThanAllowed = mutableSetOf<String>()
+        for (e in eigenschaften) {
+            val amount = containsPart(e.name)
+            if (amount > e.maxAnzahl) {
+                if(!foundMoreThanAllowed.contains(e.name)) {
+                    foundMoreThanAllowed.add(e.name)
+                    val mes = "Eigenschaft ${e.name} darf nur ${e.maxAnzahl} mal vorkommen, kommt aber $amount mal vor."
+                    println(mes)
+                    message += mes + "\n"
+                    legal = false
+                }
+            }
+        }
+
+        // check if the amount of disadvantage points is not above the max
         var amountOfNachteiligeEigenschaftenPunkte = 0
         for(e in eigenschaften) {
             if (!e.vorteil) {
@@ -401,37 +419,41 @@ data class Waffe(
         return Legal(legal, message)
     }
 
-    private fun containsPart(name: String): Boolean {
+    private fun containsPart(name: String): Int {
+        var sum = 0
         for (eigenschaft in eigenschaften.stream().map { it.name }) {
             if (name == eigenschaft) {
-                return true
+                sum++
             }
+        }
+        if (sum > 0) {
+            return sum
         }
 
         if (name == feuermodus.name) {
-            return true
+            return 1
         }
 
         if (name == kaliber.name) {
-            return true
+            return 1
         }
 
         if (name == lauf.name) {
-            return true
+            return 1
         }
 
         if (name == magazin.name) {
-            return true
+            return 1
         }
 
         if (name == rahmen.name) {
-            return true
+            return 1
         }
 
         if (name == schaft.name) {
-            return true
+            return 1
         }
 
-        return false
+        return 0
     }
 }

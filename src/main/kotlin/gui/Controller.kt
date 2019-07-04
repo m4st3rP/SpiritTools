@@ -7,6 +7,7 @@ import waffe.*
 
 class Controller: App(View::class, Styles::class) {
     val teile = Teile()
+    val ausgewaehlteEigenschaften = mutableListOf<Eigenschaft>()
 
     fun getRahmen(): ObservableList<Rahmen>? = FXCollections.observableArrayList(teile.rahmen)
     fun getKaliber(): ObservableList<Kaliber>? = FXCollections.observableArrayList(teile.kaliber)

@@ -103,6 +103,7 @@ class View : View("Spirit Tools") {
                 eigenschaftVorteiligTable = tableview(controller.getEigenschaftenVorteilig()) {
                     readonlyColumn("Name", Eigenschaft::name)
                     readonlyColumn("Last", Eigenschaft::last)
+                    readonlyColumn("Max. Anzahl", Eigenschaft::maxAnzahl)
                     readonlyColumn("Punkte", Eigenschaft::punkte)
                     readonlyColumn("Preismodifikator", Eigenschaft::wert)
                     readonlyColumn("Gesamtpreismodifikator", Eigenschaft::gesamtpreismodifikator)
@@ -113,6 +114,7 @@ class View : View("Spirit Tools") {
                 eigenschaftNachteiligTable = tableview(controller.getEigenschaftenNachteilig()) {
                     readonlyColumn("Name", Eigenschaft::name)
                     readonlyColumn("Last", Eigenschaft::last)
+                    readonlyColumn("Max. Anzahl", Eigenschaft::maxAnzahl)
                     readonlyColumn("Punkte", Eigenschaft::punkte)
                     readonlyColumn("Preismodifikator", Eigenschaft::wert)
                     readonlyColumn("Gesamtpreismodifikator", Eigenschaft::gesamtpreismodifikator)
@@ -139,39 +141,65 @@ class View : View("Spirit Tools") {
 
             selectionModel.selectionMode = SelectionMode.SINGLE
         }
-        button("Waffe zusammenstellen").onAction = EventHandler {
-            val feuermodus = feuermodiTable?.selectionModel?.selectedItem
-            val kaliber = kaliberTable?.selectionModel?.selectedItem
-            val lauf = laufTable?.selectionModel?.selectedItem
-            val magazin = magazinTable?.selectionModel?.selectedItem
-            val rahmen = rahmenTable?.selectionModel?.selectedItem
-            val schaft = schaftTable?.selectionModel?.selectedItem
-            val eigenschaftenVorteilig = eigenschaftVorteiligTable?.selectionModel?.selectedItems
-            val eigenschaftenNachteilig = eigenschaftNachteiligTable?.selectionModel?.selectedItems
+        hbox {
+            spacing = 25.0
 
-            val eigenschaften = mutableListOf<Eigenschaft>()
-            if (eigenschaftenVorteilig != null) {
-                for(e in eigenschaftenVorteilig) {
-                    eigenschaften.add(e)
+            button("Waffe zusammenstellen").onAction = EventHandler {
+                val feuermodus = feuermodiTable?.selectionModel?.selectedItem
+                val kaliber = kaliberTable?.selectionModel?.selectedItem
+                val lauf = laufTable?.selectionModel?.selectedItem
+                val magazin = magazinTable?.selectionModel?.selectedItem
+                val rahmen = rahmenTable?.selectionModel?.selectedItem
+                val schaft = schaftTable?.selectionModel?.selectedItem
+
+                val waffe = controller.getWaffe(controller.ausgewaehlteEigenschaften, feuermodus!!, kaliber!!, lauf!!, magazin!!, rahmen!!, schaft!!) //TODO: do proper checks
+                waffe.calculateEverything()
+                val waffeLegal = waffe.getWaffeLegal(controller.teile.blacklists, controller.teile.whitelists)
+                if (waffeLegal.legal) {
+                    waffenTable.items.add(waffe)
+                } else {
+                    alert(
+                        type = Alert.AlertType.ERROR,
+                        header = "Waffe illegal!",
+                        content = waffeLegal.message
+                    )
                 }
             }
-            if (eigenschaftenNachteilig != null) {
-                for(e in eigenschaftenNachteilig) {
-                    eigenschaften.add(e)
+
+            button("Eigenschaft Vorteilig +").onAction = EventHandler {
+                val eigenschaftenVorteilig = eigenschaftVorteiligTable?.selectionModel?.selectedItems
+                if (eigenschaftenVorteilig != null) {
+                    for (e in eigenschaftenVorteilig) {
+                        controller.ausgewaehlteEigenschaften.add(e)
+                    }
                 }
             }
-
-            val waffe = controller.getWaffe(eigenschaften, feuermodus!!, kaliber!!, lauf!!, magazin!!, rahmen!!, schaft!!) //TODO: do proper checks
-            waffe.calculateEverything()
-            val waffeLegal = waffe.getWaffeLegal(controller.teile.blacklists, controller.teile.whitelists)
-            if (waffeLegal.legal) {
-                waffenTable.items.add(waffe)
-            } else {
-                alert(
-                    type = Alert.AlertType.ERROR,
-                    header = "Waffe illegal!",
-                    content = waffeLegal.message
-                )
+            button("Eigenschaft Vorteilig -").onAction = EventHandler {
+                val eigenschaftenVorteilig = eigenschaftVorteiligTable?.selectionModel?.selectedItems
+                if (eigenschaftenVorteilig != null) {
+                    for (e in eigenschaftenVorteilig) {
+                        controller.ausgewaehlteEigenschaften.remove(e)
+                    }
+                }
+            }
+            button("Eigenschaft Nachteilig +").onAction = EventHandler {
+                val eigenschaftenNachteilig = eigenschaftNachteiligTable?.selectionModel?.selectedItems
+                if (eigenschaftenNachteilig != null) {
+                    for (e in eigenschaftenNachteilig) {
+                        controller.ausgewaehlteEigenschaften.add(e)
+                    }
+                }
+            }
+            button("Eigenschaft Nachteilig -").onAction = EventHandler {
+                val eigenschaftenNachteilig = eigenschaftNachteiligTable?.selectionModel?.selectedItems
+                if (eigenschaftenNachteilig != null) {
+                    for (e in eigenschaftenNachteilig) {
+                        controller.ausgewaehlteEigenschaften.remove(e)
+                    }
+                }
+            }
+            button("Eigenschaften entfernen").onAction = EventHandler {
+                controller.ausgewaehlteEigenschaften.removeAll(controller.ausgewaehlteEigenschaften)
             }
         }
     }
