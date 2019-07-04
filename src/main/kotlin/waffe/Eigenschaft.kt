@@ -25,5 +25,7 @@ data class Eigenschaft(
     val robust: Boolean = false,
     val unrobust: Boolean = false,
     val gesamtpreismodifikator: Double = 0.0, //TODO rename to gesamtPreisModifikator
-    val geraeuschBeimNachladen: Boolean = false
+    val geraeuschBeimNachladen: Boolean = false,
+
+    var anzahl: Int = 0
 )

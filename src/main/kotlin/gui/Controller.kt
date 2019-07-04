@@ -15,6 +15,8 @@ class Controller: App(View::class, Styles::class) {
     fun getMagazine(): ObservableList<Magazin>? = FXCollections.observableArrayList(teile.magazine)
     fun getLaufarten(): ObservableList<Lauf>? = FXCollections.observableArrayList(teile.laufarten)
     fun getSchaftarten(): ObservableList<Schaft>? = FXCollections.observableArrayList(teile.schaftarten)
+    fun getEigenschaften(): ObservableList<Eigenschaft>? = FXCollections.observableArrayList(teile.eigenschaften)
+
     fun getEigenschaftenVorteilig(): ObservableList<Eigenschaft>? = FXCollections.observableArrayList(teile.eigenschaften.filter { it.vorteil })
     fun getEigenschaftenNachteilig(): ObservableList<Eigenschaft>? = FXCollections.observableArrayList(teile.eigenschaften.filter { !it.vorteil })
 
