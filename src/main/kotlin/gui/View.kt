@@ -142,7 +142,7 @@ class View : View("Spirit Tools") {
             selectionModel.selectionMode = SelectionMode.SINGLE
         }
         hbox {
-            spacing = 25.0
+            spacing = 50.0
 
             button("Waffe zusammenstellen").onAction = EventHandler {
                 val feuermodus = feuermodiTable?.selectionModel?.selectedItem

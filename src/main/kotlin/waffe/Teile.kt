@@ -26,6 +26,7 @@ data class Teile(
         val blacklistsPath = File(".\\JSON\\Regeln\\Blacklists")
         val whitelistsPath = File(".\\JSON\\Regeln\\Whitelists")
 
+        //TODO: fix parsing of special characters
         eigenschaftenPath.listFiles().forEach {
             Klaxon().parse<Eigenschaft>(it)?.let { it1 -> eigenschaften.add(it1) }
         }
