@@ -8,12 +8,12 @@ const val LAEUFE_ANZAHL_BASIS = 1
 
 data class Waffe(
     private val eigenschaften: List<Eigenschaft>,
-    private var feuermodus: Feuermodus,
-    private var kaliber: Kaliber,
-    private var lauf: Lauf,
-    private var magazin: Magazin,
-    private var rahmen: Rahmen,
-    private var schaft: Schaft
+    private val feuermodus: Feuermodus,
+    private val kaliber: Kaliber,
+    private val lauf: Lauf,
+    private val magazin: Magazin,
+    private val rahmen: Rahmen,
+    private val schaft: Schaft
     ) {
     var lastE: Int = Int.MIN_VALUE
     var durchschlagE: Int = Int.MIN_VALUE
@@ -21,6 +21,7 @@ data class Waffe(
     var eigenschaftenNamenE: List<String> = mutableListOf()
     var feuermodusE: String = "Fehler"
     var kaliberE: String = "Fehler"
+    var schaftE: String = "Fehler"
     var komplexitaetE: Int = Int.MIN_VALUE
     var kugelnE: Int = Int.MIN_VALUE
     var schadenE: Int = Int.MIN_VALUE
@@ -52,6 +53,7 @@ data class Waffe(
         println("Eigenschaften = " + getEigenschaftenNamen())
         println("Feuermodus = " + getFeuermodus())
         println("Kaliber = " + getKaliber())
+        println("Schaft = " + getSchaft())
         println("Komplexität = " + getKomplexitaet())
         println("Kugeln = " + getKugeln())
         println("Schaden = " + getSchaden())
@@ -188,6 +190,11 @@ data class Waffe(
     fun getKaliber(): String {
         kaliberE = kaliber.name
         return kaliber.name
+    }
+
+    fun getSchaft(): String {
+        schaftE = schaft.name
+        return schaft.name
     }
 
     fun getKomplexitaet(): Int {
@@ -350,6 +357,7 @@ data class Waffe(
         return geraeuschBeimNachladen
     }
 
+    // todo check if durchschlag and rueckstoß eigenschaften lower the value too much
     fun getWaffeLegal(blacklists: List<Blacklist>, whitelists: List<Whitelist>): Legal {
         var legal = true
         var firstFoundPart = ""

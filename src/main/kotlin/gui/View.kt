@@ -98,7 +98,7 @@ class View : View("Spirit Tools") {
                     selectionModel.selectionMode = SelectionMode.SINGLE
                 }
             }
-            //TODO: implement information text and multiple selection
+            //TODO: implement information text
             tab("Eigenschaften - Vorteile") {
                 eigenschaftVorteiligTable = tableview(controller.getEigenschaftenVorteilig()) {
                     readonlyColumn("Name", Eigenschaft::name)
@@ -108,7 +108,7 @@ class View : View("Spirit Tools") {
                     readonlyColumn("Preismodifikator", Eigenschaft::wert)
                     readonlyColumn("Gesamtpreismodifikator", Eigenschaft::gesamtpreismodifikator)
                     column("Anzahl", Eigenschaft::anzahl).makeEditable()
-                    selectionModel.selectionMode = SelectionMode.MULTIPLE
+                    selectionModel.selectionMode = SelectionMode.SINGLE
                 }
             }
             tab("Eigenschaften - Nachteile") {
@@ -120,7 +120,7 @@ class View : View("Spirit Tools") {
                     readonlyColumn("Preismodifikator", Eigenschaft::wert)
                     readonlyColumn("Gesamtpreismodifikator", Eigenschaft::gesamtpreismodifikator)
                     column("Anzahl", Eigenschaft::anzahl).makeEditable()
-                    selectionModel.selectionMode = SelectionMode.MULTIPLE
+                    selectionModel.selectionMode = SelectionMode.SINGLE
                 }
             }
         }
@@ -135,6 +135,7 @@ class View : View("Spirit Tools") {
             readonlyColumn("Magart", Waffe::magazinartE)
             readonlyColumn("Maggröße", Waffe::magazingroesseE)
             readonlyColumn("Modus", Waffe::feuermodusE)
+            readonlyColumn("Schaft", Waffe::schaftE)
             readonlyColumn("Last", Waffe::lastE)
             readonlyColumn("Kompl.", Waffe::komplexitaetE)
             readonlyColumn("Eigen.", Waffe::eigenschaftenNamenE)
